@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: SoundMappings
   m_EditorClassIdentifier: Assembly-CSharp::SoundMappings
   mappings:
+  - eventName: 12
+    clip: {fileID: 0}
   - eventName: 0
     clip: {fileID: 0}
