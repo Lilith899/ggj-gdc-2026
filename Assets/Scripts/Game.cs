@@ -5,13 +5,14 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 // God class from hell.
 // Static doer
 public class Game : MonoBehaviour
 {
     public static Game instance;
-    
+
     public static int handSizePrep = 3;
     public static int handSizeParty = 5;
     public static int handSizeSlaughter = 3;
@@ -49,6 +50,7 @@ public class Game : MonoBehaviour
     void Awake()
     {
         instance = this;
+        StartGame();
     }
 
     public static void StartGame()
@@ -73,29 +75,42 @@ public class Game : MonoBehaviour
         return newCard;
     }
 
-    public static void PlayCard(Card card)
+    public static bool PlayCard(Card card)
     {
+        if (!instance.gameState.CanPlayCard(card))
+        {
+            return false;
+        }
+
         instance.hand.PlayCard(card);
         Events.OnCardPlayed.Invoke(card);
+
         EndTurn();
+
+        return true;
     }
 
     public static void ReplaceHand()
     {
         int cardCount = instance.hand.CardCount;
+        ReplaceHand(cardCount);
+    }
+
+    public static void ReplaceHand(int newCount)
+    {
         DiscardHand();
-        DrawCards(cardCount);
+        DrawCards(newCount);
     }
 
     public static void DiscardHand()
     {
-        // TO DO
+        instance.hand.DiscardHand();
     }
 
-    private static void DiscardCard(int index)
+    private static void DiscardCard(Card target)
     {
-        // TO DO
-        // Also make sure to invoke the OnCardDiscarded event
+        instance.hand.DiscardCard(target);
+        Events.OnCardDiscarded.Invoke(target);
     }
 
     public static void EndTurn()
@@ -133,4 +148,5 @@ public class Game : MonoBehaviour
     {
         //TO DO
     }
+
 }
