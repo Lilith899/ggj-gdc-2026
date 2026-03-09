@@ -14,7 +14,8 @@ public enum SoundEvent
     TurnEnded,
     PhaseEnded,
     PhaseStarted,
-    Ambient
+    Ambient,
+    CardShuffled
 }
 
 [System.Serializable]
